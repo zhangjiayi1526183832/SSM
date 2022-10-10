@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"></properties>
+    <!--将下划线映射为驼峰-->
+    <settings>
+<!--        将下划线命名改变为驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+<!--        开启延迟加载 跟两个全局变量有关 前者为延迟加载 后者为按需加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+    <typeAliases>
+        <package name="com.zhang.pojo"/>
+    </typeAliases>
+    <!--    配置连接数据库的环境-->
+    <environments default="development">
+        <environment id="development">
+            <!--            事务管理器jdbc-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--    引入mybatis的映射文件  -->
+    <mappers>
+        <package name="com.zhang.mapper"/>
+    </mappers>
+</configuration>

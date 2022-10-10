@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+    <bean id="StudentOne" class="com.zhang.pojo.Student"></bean>
+
+    <bean id="StudentTwo" class="com.zhang.pojo.Student">
+        <property name="sid" value="1"></property>
+        <property name="sname" value="张三"></property>
+        <property name="age" value="19"></property>
+        <property name="gender" value="男"></property>
+        <property name="clazz" ref="clazzOne"></property>
+    </bean>
+
+    <bean id="StudentThree" class="com.zhang.pojo.Student">
+        <property name="sid" value="2"></property>
+
+        <property name="sname">
+        <value><![CDATA[<赵六>]]></value> <!--有特殊字符时使用cdata环绕-->
+        </property>
+
+        <property name="age" value="20"></property>
+        <property name="gender"><null></null></property> <!--设置值为null-->
+        <property name="clazz">
+            <bean id="ClazzTwo" class="com.zhang.pojo.Clazz">
+                <property name="cid" value="2"></property>
+                <property name="cname" value="二班"></property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="StudentFour" class="com.zhang.pojo.Student">
+        <property name="sid" value="4"></property>
+        <property name="sname" value="赵六"></property>
+        <property name="gender" value="男"></property>
+        <property name="age" value="4"></property>
+        <property name="clazz" ref="clazzOne"></property>
+        <property name="hobby">
+            <array>
+                <value>抽烟</value>
+                <value>喝酒</value>
+                <value>吃肥肉</value>
+            </array>
+        </property>
+        <property name="teacherMap" ref="teachermap"></property>
+    </bean>
+
+    <bean id="StudentFive" class="com.zhang.pojo.Student" p:sid="5" p:sname="郭一凡" p:clazz-ref="clazzOne" ></bean>
+
+    <bean class="com.zhang.pojo.Clazz" id="clazzOne">
+        <property name="cid" value="1"></property>
+        <property name="cname" value="一班"></property>
+    </bean>
+
+    <bean id="ClazzThree" class="com.zhang.pojo.Clazz">
+        <property name="cname" value="三班"></property>
+        <property name="cid" value="3"></property>
+        <property name="students">
+            <list>
+                <ref bean="StudentOne"></ref>
+                <ref bean="StudentTwo"></ref>
+                <ref bean="StudentThree"></ref>
+            </list>
+        </property>
+    </bean>
+    <bean id="tescherone" class="com.zhang.pojo.Teacher">
+        <property name="tid" value="1"></property>
+        <property name="tname" value="陈绪龙"></property>
+    </bean>
+
+    <bean id="teschertwo" class="com.zhang.pojo.Teacher">
+        <property name="tid" value="2"></property>
+        <property name="tname" value="汪洋洋"></property>
+    </bean>
+
+    <util:map id="teachermap">
+        <entry key="1" value-ref="tescherone"></entry>
+        <entry key="2" value-ref="teschertwo"></entry>
+    </util:map>
+</beans>

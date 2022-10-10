@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhang.mapper.EmpMapper">
+
+    <resultMap id="EmpResultMap" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+    </resultMap>
+
+    <select id="getEmpByEmpId" resultMap="EmpResultMap">
+        select * from t_emp where emp_id = #{empId}
+    </select>
+
+    <resultMap id="EmpAndDeptResultMapOne" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+        <result column="dept_id" property="dept.deptId"></result>
+        <result column="dept_name" property="dept.deptName"></result>
+    </resultMap>
+
+    <resultMap id="EmpAndDeptResultMap" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+        <association property="dept" javaType="Dept" >
+            <id column="dept_id" property="deptId"></id>
+            <result column="dept_name" property="deptName"></result>
+        </association>
+    </resultMap>
+
+    <select id="getEmpAndDeptByEmpId" resultMap="EmpAndDeptResultMap">
+        select t_emp.*,t_dept.*
+        from t_emp
+        left join t_dept
+        on t_emp.dept_id = t_dept.dept_id
+        where t_emp.emp_id = #{empId}
+    </select>
+
+    <resultMap id="EmpAndDeptByStepResultMap" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+        <!--fetchType 在开启了延迟加载的环境中 通过属性设置当前的分布查询是否使用延迟加载 lazy(延迟加载)|eager(立即加载)-->
+        <association property="dept"
+                     select="com.zhang.mapper.DeptMapper.getEmpAndDeptByStepTwo"
+                     column="dept_id"
+                     fetchType="lazy"></association>
+    </resultMap>
+
+    <select id="getEmpAndDeptByStepOne" resultMap="EmpAndDeptByStepResultMap">
+        select * from t_emp where emp_id = #{empId}
+    </select>
+
+    <select id="getDeptAndEmpByStepTwo" resultType="Emp">
+        select * from t_emp where dept_id = #{deptId}
+    </select>
+
+</mapper>
